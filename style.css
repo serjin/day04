@@ -1,0 +1,168 @@
+:root {
+  --bg: #0b1a33;
+  --surface: #13264a;
+  --surface-2: #1a3160;
+  --border: #25407a;
+  --text: #e6ecf7;
+  --muted: #9aabcb;
+  --accent: #6ea8ff;
+  --success: #4fd1a5;
+  --warning: #f5b85c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 상단 메뉴 */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header nav {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.site-header .logo {
+  font-weight: 700;
+  color: var(--text);
+  margin-right: auto;
+}
+
+.site-header nav a {
+  color: var(--muted);
+}
+
+.site-header nav a:hover,
+.site-header nav a.active {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* 본문 */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: 2rem;
+}
+
+.lead {
+  color: var(--muted);
+  margin: 0 0 32px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 24px;
+  margin-right: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.button:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+/* 할 일 목록 */
+#status {
+  color: var(--muted);
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.todo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--warning);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.todo.done {
+  border-left-color: var(--success);
+}
+
+.todo strong {
+  font-size: 1.1rem;
+}
+
+.todo.done strong {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.todo ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.todo ul li {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 24px 16px 40px;
+}

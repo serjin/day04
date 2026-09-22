@@ -4,12 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo Preview</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>할 일 목록</h1>
-  <p id="status">불러오는 중...</p>
-  <ul id="todo-list"></ul>
-  <a href="index.html">홈으로</a>
+  <header class="site-header">
+    <nav>
+      <a class="logo" href="index.html">Day 04</a>
+      <a href="index.html">홈</a>
+      <a href="about.html">About</a>
+      <a class="active" href="preview.html">할 일 목록</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>할 일 목록</h1>
+    <p id="status" class="lead">불러오는 중...</p>
+    <ul id="todo-list" class="todo-list"></ul>
+    <a class="button secondary" href="index.html">홈으로</a>
+  </main>
 
   <script>
     const SUPABASE_URL = 'https://xvybnyojhweiudjbktdq.supabase.co/rest/v1/';
@@ -46,9 +58,9 @@
 
         todos.forEach(row => {
           const li = document.createElement('li');
+          li.className = row.done ? 'todo done' : 'todo';
           const title = document.createElement('strong');
           title.textContent = row.title;
-          if (row.done) title.style.textDecoration = 'line-through';
           li.appendChild(title);
 
           const details = document.createElement('ul');
