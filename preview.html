@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo Preview</title>
+</head>
+<body>
+  <h1>할 일 목록</h1>
+  <p id="status">불러오는 중...</p>
+  <ul id="todo-list"></ul>
+  <a href="index.html">홈으로</a>
+
+  <script>
+    const SUPABASE_URL = 'https://xvybnyojhweiudjbktdq.supabase.co/rest/v1/';
+    const SUPABASE_KEY = 'sb_publishable_9QqxBDq0CpA1UJdPL3YzAw_AWj5yRYg';
+
+    // 컬럼 이름을 모르므로 흔히 쓰는 이름 중 있는 것을 사용
+    const TEXT_FIELDS = ['title', 'task', 'content', 'text', 'name', 'todo'];
+    const DONE_FIELDS = ['is_complete', 'completed', 'done', 'is_done'];
+
+    function pick(row, fields) {
+      const key = fields.find(f => f in row);
+      return key === undefined ? undefined : row[key];
+    }
+
+    async function loadTodos() {
+      const status = document.getElementById('status');
+      const list = document.getElementById('todo-list');
+
+      try {
+        const res = await fetch(SUPABASE_URL + 'test_todos?select=*', {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: 'Bearer ' + SUPABASE_KEY
+          }
+        });
+        if (!res.ok) throw new Error(res.status + ' ' + (await res.text()));
+
+        const todos = await res.json();
+        if (todos.length === 0) {
+          status.textContent = '표시할 할 일이 없습니다.';
+          return;
+        }
+        status.textContent = '총 ' + todos.length + '개';
+
+        todos.forEach(row => {
+          const li = document.createElement('li');
+          const text = pick(row, TEXT_FIELDS);
+          const done = pick(row, DONE_FIELDS);
+          li.textContent = text !== undefined ? text : JSON.stringify(row);
+          if (done === true) li.style.textDecoration = 'line-through';
+          list.appendChild(li);
+        });
+      } catch (err) {
+        status.textContent = '불러오기 실패: ' + err.message;
+      }
+    }
+
+    loadTodos();
+  </script>
+</body>
+</html>
