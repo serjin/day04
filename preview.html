@@ -15,21 +15,21 @@
     const SUPABASE_URL = 'https://xvybnyojhweiudjbktdq.supabase.co/rest/v1/';
     const SUPABASE_KEY = 'sb_publishable_9QqxBDq0CpA1UJdPL3YzAw_AWj5yRYg';
 
-    // 컬럼 이름을 모르므로 흔히 쓰는 이름 중 있는 것을 사용
-    const TEXT_FIELDS = ['title', 'task', 'content', 'text', 'name', 'todo'];
-    const DONE_FIELDS = ['is_complete', 'completed', 'done', 'is_done'];
-
-    function pick(row, fields) {
-      const key = fields.find(f => f in row);
-      return key === undefined ? undefined : row[key];
-    }
+    // 표시할 컬럼과 화면에 보일 이름
+    const FIELDS = [
+      ['id', 'ID'],
+      ['amount', '수량'],
+      ['done', '완료 여부', v => (v ? '완료' : '미완료')],
+      ['due_date', '마감일'],
+      ['created_at', '생성일', v => new Date(v).toLocaleString('ko-KR')]
+    ];
 
     async function loadTodos() {
       const status = document.getElementById('status');
       const list = document.getElementById('todo-list');
 
       try {
-        const res = await fetch(SUPABASE_URL + 'test_todos?select=*', {
+        const res = await fetch(SUPABASE_URL + 'test_todos?select=*&order=id', {
           headers: {
             apikey: SUPABASE_KEY,
             Authorization: 'Bearer ' + SUPABASE_KEY
@@ -46,10 +46,20 @@
 
         todos.forEach(row => {
           const li = document.createElement('li');
-          const text = pick(row, TEXT_FIELDS);
-          const done = pick(row, DONE_FIELDS);
-          li.textContent = text !== undefined ? text : JSON.stringify(row);
-          if (done === true) li.style.textDecoration = 'line-through';
+          const title = document.createElement('strong');
+          title.textContent = row.title;
+          if (row.done) title.style.textDecoration = 'line-through';
+          li.appendChild(title);
+
+          const details = document.createElement('ul');
+          FIELDS.forEach(([key, label, format]) => {
+            if (!(key in row)) return;
+            const value = row[key];
+            const item = document.createElement('li');
+            item.textContent = label + ': ' + (value === null ? '-' : format ? format(value) : value);
+            details.appendChild(item);
+          });
+          li.appendChild(details);
           list.appendChild(li);
         });
       } catch (err) {
